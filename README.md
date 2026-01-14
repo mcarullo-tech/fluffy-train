@@ -8,8 +8,7 @@ The process was repetitive and time‑consuming, so I built a tool to automate i
 
 ## How It’s Made
 
-### Tech Stack
-**Python**, **Tkinter**, **Selenium WebDriver**
+### Tech Stack: **Python**, **Tkinter**, **Selenium WebDriver**
 
 ### How It Works
 The program fills out ROAM observations exactly as a human would:
