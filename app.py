@@ -24,33 +24,188 @@ PAGE_HTML = """<!DOCTYPE html>
 <meta charset="utf-8">
 <title>AutoROAM Web</title>
 <style>
-body { font-family: Arial, sans-serif; margin: 20px; }
-label { display: inline-block; margin-right: 12px; }
-input, select, button { font-size: 1rem; margin: 4px 0; }
-textarea { width: 100%; height: 280px; margin-top: 12px; padding: 10px; font-family: Consolas, monospace; font-size: 0.95rem; }
-.status { margin-top: 12px; }
+:root {
+  color-scheme: light;
+  --bg: #eef4fb;
+  --surface: #ffffff;
+  --surface-alt: #f7faff;
+  --text: #14213d;
+  --text-muted: #4b5563;
+  --accent: #2563eb;
+  --accent-strong: #1d4ed8;
+  --danger: #dc2626;
+  --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+}
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: linear-gradient(180deg, #f0f6ff 0%, #dce9f8 100%);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text);
+}
+body {
+  padding: 24px;
+}
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 2.5vw, 2.75rem);
+  letter-spacing: -0.03em;
+}
+p.subtitle {
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.card {
+  background: var(--surface);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1.2fr 0.8fr;
+}
+.controls {
+  display: grid;
+  gap: 12px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.field label {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.field input,
+.field select {
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  background: #f8fbff;
+  outline: none;
+}
+.field input:focus,
+.field select:focus {
+  outline: 2px solid rgba(37, 99, 235, 0.2);
+}
+.button-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+button {
+  border: none;
+  border-radius: 14px;
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+button:active {
+  transform: translateY(0);
+}
+.status-panel {
+  background: var(--surface-alt);
+  border-radius: 20px;
+  padding: 20px;
+  display: grid;
+  gap: 10px;
+}
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+.status-item strong {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.message {
+  color: var(--danger);
+  font-weight: 600;
+  min-height: 24px;
+}
+.log-panel {
+  width: 100%;
+  min-height: 320px;
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: 20px;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow: auto;
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.16);
+}
+@media (max-width: 760px) {
+  .grid { grid-template-columns: 1fr; }
+  .header { flex-direction: column; align-items: stretch; }
+}
 </style>
 </head>
 <body>
-<h1>AutoROAM Web</h1>
-<div>
-  <label>Interval (minutes): <input id="interval" type="number" min="0.1" step="0.5" value="5"></label>
-  <label>Mode:
-    <select id="mode">
-      <option value="demo">Generate only</option>
-      <option value="submit">Submit to ROAM</option>
-    </select>
-  </label>
-  <button id="toggle">Start</button>
+<div class="container">
+  <div class="header">
+    <div>
+      <h1>AutoROAM Web</h1>
+      <p class="subtitle">Generate or submit ROAM observations automatically on a schedule, with a live activity log.</p>
+    </div>
+  </div>
+  <div class="card grid">
+  <div class="controls">
+    <div class="field">
+      <label for="interval">Interval (minutes)</label>
+      <input id="interval" type="number" min="0.1" step="0.5" value="5">
+    </div>
+    <div class="field">
+      <label for="mode">Mode</label>
+      <select id="mode">
+        <option value="demo">Generate only</option>
+        <option value="submit">Submit to ROAM</option>
+      </select>
+    </div>
+    <div class="button-row">
+      <button id="toggle" type="button">Start</button>
+      <div class="message" id="message"></div>
+    </div>
+  </div>
+  <div class="status-panel">
+    <div class="status-item"><strong>Status</strong><span id="status">Idle</span></div>
+    <div class="status-item"><strong>Last run</strong><span id="last_run">Never</span></div>
+    <div class="status-item"><strong>Mode</strong><span id="current_mode">demo</span></div>
+    <div class="status-item"><strong>Interval</strong><span id="current_interval">5</span> min</div>
+  </div>
 </div>
-<div class="status">
-  <strong>Status:</strong> <span id="status">Idle</span><br>
-  <strong>Last run:</strong> <span id="last_run">Never</span><br>
-  <strong>Mode:</strong> <span id="current_mode">demo</span><br>
-  <strong>Interval:</strong> <span id="current_interval">5</span> min
-</div>
-<div id="message" style="margin-top: 10px; color: #c00;"></div>
-<textarea id="log" readonly placeholder="Observation/action history will appear here..."></textarea>
+<pre id="log" class="log-panel" readonly>Observation/action history will appear here...</pre>
 <script>
 let running = false;
 const button = document.getElementById('toggle');
@@ -65,13 +220,13 @@ const logEl = document.getElementById('log');
 
 button.addEventListener('click', async () => {
   if (!running) {
-    await start();
+    await startWorker();
   } else {
-    await stop();
+    await stopWorker();
   }
 });
 
-async function start() {
+async function startWorker() {
   messageEl.textContent = '';
   const intervalMinutes = parseFloat(intervalInput.value) || 5;
   const mode = modeSelect.value;
@@ -96,7 +251,7 @@ async function start() {
   }
 }
 
-async function stop() {
+async function stopWorker() {
   messageEl.textContent = '';
   try {
     const response = await fetch('/stop', { method: 'POST' });
@@ -132,7 +287,7 @@ async function refresh() {
       button.textContent = 'Start';
     }
 
-    logEl.value = data.logs.map(entry => `${entry.timestamp} [${entry.mode.toUpperCase()}] ${entry.observation}\\n${entry.action}\\nResult: ${entry.result}\\n`).join('\\n');
+    logEl.textContent = data.logs.map(entry => `${entry.timestamp} [${entry.mode.toUpperCase()}] ${entry.observation}\\n${entry.action}\\nResult: ${entry.result}\\n`).join('\\n');
   } catch (error) {
     messageEl.textContent = 'Unable to refresh status/logs: ' + error.message;
   }
