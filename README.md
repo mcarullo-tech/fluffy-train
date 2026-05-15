@@ -14,12 +14,13 @@ The process was repetitive and time‑consuming, so I built a tool to automate i
 The program fills out ROAM observations exactly as a human would:
 
 - Loads the ROAM web form using Selenium  
-- Generates randomized ad‑lib style safety observations  
-  - Example: “I observed a/an *[noun]* *[verb]*‑ing by the *[location]*.”
-  - Nouns, verbs, and locations are pulled from predefined lists to create many unique combinations  
-- Generates corresponding “actions taken” in the same style  
-- Uses a Tkinter GUI where the user selects how many observations to submit  
-- Displays progress through a simple progress bar
+- Generates contextual safety observations for an office environment  
+  - Example: “I observed a loose electrical cord crossing a busy walkway in the printer area.”
+  - Uses structured hazard templates and plausible office locations to keep entries realistic  
+- Generates matching corrective actions that are appropriate for each observation  
+- Provides a web interface where the user can start/stop periodic generation  
+- Supports demo mode (generate only) and submit mode (post to ROAM)  
+- Displays generated observation/action entries and timestamps in the browser
 
 ---
 
