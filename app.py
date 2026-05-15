@@ -153,7 +153,8 @@ button:active {
 }
 .log-panel {
   width: 100%;
-  min-height: 320px;
+  height: 340px;
+  max-height: 380px;
   margin-top: 16px;
   padding: 18px;
   border-radius: 20px;
@@ -287,7 +288,8 @@ async function refresh() {
       button.textContent = 'Start';
     }
 
-    logEl.textContent = data.logs.map(entry => `${entry.timestamp} [${entry.mode.toUpperCase()}] ${entry.observation}\\n${entry.action}\\nResult: ${entry.result}\\n`).join('\\n');
+    const visibleLogs = data.logs.slice(0, 50);
+    logEl.textContent = visibleLogs.map(entry => `${entry.timestamp} [${entry.mode.toUpperCase()}] ${entry.observation}\\n${entry.action}\\nResult: ${entry.result}\\n`).join('\\n');
   } catch (error) {
     messageEl.textContent = 'Unable to refresh status/logs: ' + error.message;
   }
