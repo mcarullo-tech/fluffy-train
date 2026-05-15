@@ -4,7 +4,7 @@ At my company, one of the performance metrics involves logging weekly safety obs
 
 The process was repetitive and time‑consuming, so I built a tool to automate the generation and optional submission of those entries.
 
-![AutoROAM Web UI](./site_screenshot.png)
+![AutoROAM Web UI](site_screenshot.png)
 
 ---
 
