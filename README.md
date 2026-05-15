@@ -1,31 +1,45 @@
 # Project Overview
 
-At my company, one of the performance metrics involves logging weekly safety observations—called **ROAM Observations**. Employees submit these through a simple web form, describing any safety concerns they noticed and the actions taken to address them.
+At my company, one of the performance metrics involves logging weekly safety observations—called **ROAM Observations**. Employees submit these through a simple web form, describing safety concerns and the actions taken to address them.
 
-The process was repetitive and time‑consuming, so I built a tool to automate it.
+The process was repetitive and time‑consuming, so I built a tool to automate the generation and optional submission of those entries.
+
+![AutoROAM Web UI](site_screenshot.png)
 
 ---
 
 ## How It’s Made
 
-### Tech Stack: **Python**, **Tkinter**, **Selenium WebDriver**
+### Tech Stack: **Python**, **Flask**, **Selenium WebDriver**
 
-### How It Works
-The program fills out ROAM observations exactly as a human would:
+### What It Does
+The application helps create realistic office safety observations and corrective actions, then either previews them or submits them through the ROAM web form.
 
-- Loads the ROAM web form using Selenium  
-- Generates contextual safety observations for an office environment  
-  - Example: “I observed a loose electrical cord crossing a busy walkway in the printer area.”
-  - Uses structured hazard templates and plausible office locations to keep entries realistic  
-- Generates matching corrective actions that are appropriate for each observation  
-- Provides a web interface where the user can start/stop periodic generation  
-- Supports demo mode (generate only) and submit mode (post to ROAM)  
-- Displays generated observation/action entries and timestamps in the browser
+- Uses a Flask-based web frontend for control and logging
+- Generates contextual safety observations for common office hazards
+  - Example: “I identified a desk lamp cord stretched across a shared workstation beside the open-plan office.”
+  - Uses structured location/hazard/action templates for plausible outputs
+- Generates a matching action for each observation
+- Provides a browser UI to start and stop periodic generation
+- Supports two modes:
+  - `demo` — generate only, no form submission
+  - `submit` — post generated entries to ROAM via Selenium
+- Shows a live activity log in the browser
+- Keeps the log panel at a fixed height with scroll support so the browser stays usable
 
 ---
 
-## Outcome
+## Usage
 
-My company awards a $20 gift card each quarter to the person who logs the most ROAM observations. I won twice.
+1. Activate your Python environment.
+2. Run `python app.py`.
+3. Open `http://127.0.0.1:5000` in your browser.
+4. Set the generation interval and choose `Generate only` or `Submit to ROAM`.
+5. Click `Start` to begin periodic generation, and `Stop` to pause it.
 
-Eventually, I was asked to retire the tool for “undermining the safety intent” of the initiative - but it was a fun project and a great exercise in automation, UI design, and creative text generation.
+---
+
+## Notes
+
+- The UI limits log rendering to the most recent entries, while older logs are still accessible through the app state.
+- The generator is designed for office safety observations and corrective actions, not general-purpose text generation.
