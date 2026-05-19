@@ -4,6 +4,8 @@ At my company, one of the performance metrics involves logging weekly safety obs
 
 The process was repetitive and time‑consuming, so I built a tool to automate the generation and optional submission of those entries.
 
+![App Screenshot](app_screenshot.PNG)
+
 ---
 
 ## How It’s Made
