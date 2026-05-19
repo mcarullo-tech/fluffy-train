@@ -35,6 +35,8 @@ The application helps create realistic office safety observations and corrective
 2. Run `python app.py`.
 3. Open `http://127.0.0.1:5000` in your browser.
 4. Set the generation interval and choose `Generate only` or `Submit to ROAM`.
+   - Spacing entries out makes generated ROAM logs appear more natural and avoids obvious batch logging patterns.
+   - A `demo` mode was also added so the tool can be tested safely without uploading anything.
 5. Click `Start` to begin periodic generation, and `Stop` to pause it.
 
 ---
